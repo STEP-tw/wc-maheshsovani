@@ -45,4 +45,10 @@ describe("wc", function() {
     let actaulOutput = wc(["-c" , "numbers"], fs);
     assert.equal(expectedOutput, actaulOutput);
   });
+
+  it("should return number of bytes when -c option is geven", function() {
+    let expectedOutput = "10\tnumbers";
+    let actaulOutput = wc(["-w" , "numbers"], fs);
+    assert.equal(expectedOutput, actaulOutput);
+  });
 });
