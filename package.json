@@ -10,9 +10,6 @@
     "type": "git",
     "url": "git+https://github.com/STEP-tw/wc-maheshsovani.git"
   },
-  "keywords": [
-    "wc"
-  ],
   "author": "Mahesh Sovani",
   "license": "ISC",
   "bugs": {
