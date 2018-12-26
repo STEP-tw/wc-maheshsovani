@@ -19,18 +19,30 @@ const fs = { readFileSync, existsSync };
 
 describe("wc", function() {
   it("should return the number of lines, words and bytes seperated with spaces when one file is given without any option", function() {
-    let expectedOutput = "\t9\t10\t19 numbers";
+    let expectedOutput = "9\t10\t19\tnumbers";
     let actaulOutput = wc(["numbers"], fs);
     assert.equal(expectedOutput, actaulOutput);
   });
   it("should return the number of lines, words and bytes when one line file is given", function() {
-    let expectedOutput = "\t0\t1\t6 oneLineFile";
+    let expectedOutput = "0\t1\t6\toneLineFile";
     let actaulOutput = wc(["oneLineFile"], fs);
     assert.equal(expectedOutput, actaulOutput);
   });
-  it("should return zero for all parameters when input file is empty ", function() {
-    let expectedOutput = "\t0\t0\t0 emptyFile";
+  it("should return zero for all parameters when input file is empty", function() {
+    let expectedOutput = "0\t0\t0\temptyFile";
     let actaulOutput = wc(["emptyFile"], fs);
+    assert.equal(expectedOutput, actaulOutput);
+  });
+
+  it("should return number of lines when -l option is given", function() {
+    let expectedOutput = "9\tnumbers";
+    let actaulOutput = wc(["-l" , "numbers"], fs);
+    assert.equal(expectedOutput, actaulOutput);
+  });
+
+  it("should return number of bytes when -c option is geven", function() {
+    let expectedOutput = "19\tnumbers";
+    let actaulOutput = wc(["-c" , "numbers"], fs);
     assert.equal(expectedOutput, actaulOutput);
   });
 });
