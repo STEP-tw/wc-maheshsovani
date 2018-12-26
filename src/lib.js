@@ -1,7 +1,7 @@
 const SPACE = " ";
 const TAB = "\t";
-const EMPTYSTR = " ";
-const NEWLine = "\n"
+const EMPTYSTR = "";
+const NEWLINE = "\n"
 
 const readContent = function(readFileSync, file) {
   return readFileSync(file[0], "utf8");
@@ -17,7 +17,7 @@ const countBytes = function(file) {
 
 const replace = function(character) {
   if (character == SPACE) {
-    character = NEWLine;
+    character = NEWLINE;
   }
   return character;
 };
@@ -28,7 +28,7 @@ const isNotEmpty = function(character){
 
 const countWords = function(file) {
   let content = file.split("");
-  let words = content.map(replace).join(EMPTYSTR).split(NEWLine).filter(isNotEmpty);
+  let words = content.map(replace).join(EMPTYSTR).split(NEWLINE).filter(isNotEmpty);
   return words.length;
 };
 
