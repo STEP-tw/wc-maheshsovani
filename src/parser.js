@@ -1,8 +1,9 @@
-const isSartsWithDash = function (option){
-  return option.startsWith('-');
+const isValidOption = function(option){
+  return ["-l","-c","-w"].includes(option);
 }
+
 const parser = function (details){
-if (isSartsWithDash(details[0])){
+if (isValidOption(details[0])){
   return { option : details[0][1] , file : details[1] }
 }
 
