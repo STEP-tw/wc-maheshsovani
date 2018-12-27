@@ -1,12 +1,27 @@
-const isValidOption = function(option){
-  return ["-l","-c","-w"].includes(option);
-}
+const DASH = "-";
+const isStartWithDash = function(option) {
+  return option.startsWith(DASH);
+};
 
-const parser = function (details){
-if (isValidOption(details[0])){
-  return { option : details[0][1] , file : details[1] }
-}
+const notStartsWithDash = function(option) {
+  return !option.startsWith(DASH);
+};
 
-return {file : details[0]};
-}
-module.exports = { parser }; 
+const removeDash = function(optionCandidates) {
+  let options = optionCandidates
+    .join("")
+    .split("")
+    .filter(notStartsWithDash)
+    .join("");
+
+  return options;
+};
+const parser = function(details) {
+  let defaultOption = "lwc";
+  let extractedOptions = details.filter(isStartWithDash);
+  let options = removeDash(extractedOptions) || defaultOption;
+  let files = details.filter(notStartsWithDash);
+  return { options, files };
+};
+
+module.exports = { parser };

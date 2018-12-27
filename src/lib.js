@@ -9,11 +9,11 @@ const readContent = function(readFileSync, file) {
 };
 
 const countLines = function(file) {
-  return file.split("\n").length - 1;
+  return file.split(NEWLINE).length - 1;
 };
 
 const countBytes = function(file) {
-  return file.split("").length;
+  return file.split(EMPTYSTR).length;
 };
 
 const replace = function(character) {
@@ -28,7 +28,7 @@ const isNotEmpty = function(character) {
 };
 
 const countWords = function(file) {
-  let content = file.split("");
+  let content = file.split(EMPTYSTR);
   let words = content
     .map(replace)
     .join(EMPTYSTR)
@@ -37,23 +37,27 @@ const countWords = function(file) {
   return words.length;
 };
 
-const requiredAction = {
-  l: countLines,
-  c: countBytes,
-  w: countWords
-};
-
 const wc = function(args, fs) {
   const { readFileSync } = fs;
-  const { file, option } = parser(args);
-  let content = readContent(readFileSync,file);
+  const { files, options } = parser(args);
+  let output = [];
+  let content = readContent(readFileSync, files[0]);
   let linesCount = countLines(content);
   let wordsCount = countWords(content);
   let bytesCount = countBytes(content);
-  if (option != undefined) {
-    return requiredAction[option](content) + TAB + file;
+
+  if (options.includes("l")) {
+    output += TAB + linesCount;
   }
-  return [linesCount, wordsCount, bytesCount , file ].join('\t');
+
+  if (options.includes("w")) {
+    output += TAB + wordsCount;
+  }
+
+  if (options.includes("c")) {
+    output += TAB + bytesCount;
+  }
+  return output + SPACE + files[0];
 };
 
 module.exports = { wc };

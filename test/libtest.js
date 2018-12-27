@@ -5,7 +5,8 @@ const readFileSync = function(fileName) {
   let files = {
     numbers: "0\n1\n2\n3\n4\n5\n6\n7\n8\n9",
     oneLineFile: "mahesh",
-    emptyFile:""
+    emptyFile: "",
+    alphabets: " a\n b\n c\n d\n e\n f"
   };
   return files[fileName];
 };
@@ -18,37 +19,128 @@ const existsSync = function(fileName) {
 const fs = { readFileSync, existsSync };
 
 describe("wc", function() {
-  it("should return the number of lines, words and bytes seperated with spaces when one file is given without any option", function() {
-    let expectedOutput = "9\t10\t19\tnumbers";
-    let actaulOutput = wc(["numbers"], fs);
-    assert.equal(expectedOutput, actaulOutput);
-  });
-  it("should return the number of lines, words and bytes when one line file is given", function() {
-    let expectedOutput = "0\t1\t6\toneLineFile";
-    let actaulOutput = wc(["oneLineFile"], fs);
-    assert.equal(expectedOutput, actaulOutput);
-  });
-  it("should return zero for all parameters when input file is empty", function() {
-    let expectedOutput = "0\t0\t0\temptyFile";
-    let actaulOutput = wc(["emptyFile"], fs);
-    assert.equal(expectedOutput, actaulOutput);
-  });
+  describe("single option test cases", function() {
+    it("should return the number of lines, words and bytes seperated with spaces when one file is given without any option", function() {
+      let expectedOutput = "\t9\t10\t19 numbers";
+      let actualOutput = wc(["numbers"], fs);
+      assert.equal(expectedOutput, actualOutput);
+    });
+    it("should return the number of lines, words and bytes when one line file is given", function() {
+      let expectedOutput = "\t0\t1\t6 oneLineFile";
+      let actualOutput = wc(["oneLineFile"], fs);
+      assert.equal(expectedOutput, actualOutput);
+    });
+    it("should return zero for all parameters when input file is empty", function() {
+      let expectedOutput = "\t0\t0\t0 emptyFile";
+      let actualOutput = wc(["emptyFile"], fs);
+      assert.equal(expectedOutput, actualOutput);
+    });
 
-  it("should return number of lines when -l option is given", function() {
-    let expectedOutput = "9\tnumbers";
-    let actaulOutput = wc(["-l" , "numbers"], fs);
-    assert.equal(expectedOutput, actaulOutput);
-  });
+    it("should return number of lines when -l option is given", function() {
+      let expectedOutput = "\t9 numbers";
+      let actualOutput = wc(["-l", "numbers"], fs);
+      assert.equal(expectedOutput, actualOutput);
+    });
 
-  it("should return number of bytes when -c option is geven", function() {
-    let expectedOutput = "19\tnumbers";
-    let actaulOutput = wc(["-c" , "numbers"], fs);
-    assert.equal(expectedOutput, actaulOutput);
-  });
+    it("should return number of bytes when -c option is geven", function() {
+      let expectedOutput = "\t19 numbers";
+      let actualOutput = wc(["-c", "numbers"], fs);
+      assert.equal(expectedOutput, actualOutput);
+    });
 
-  it("should return number of bytes when -c option is geven", function() {
-    let expectedOutput = "10\tnumbers";
-    let actaulOutput = wc(["-w" , "numbers"], fs);
-    assert.equal(expectedOutput, actaulOutput);
+    it("should return number of bytes when -c option is geven", function() {
+      let expectedOutput = "\t10 numbers";
+      let actualOutput = wc(["-w", "numbers"], fs);
+      assert.equal(expectedOutput, actualOutput);
+    });
+  });
+  describe("multiple option test cases", function() {
+    it("should return the number of lines, words and bytes seperated with spaces when one file is given with two option", function() {
+      let expectedOutput = "\t9\t10 numbers";
+      let actualOutput = wc(["-l", "-w", "numbers"], fs);
+      assert.equal(expectedOutput, actualOutput);
+    });
+    it("should return the number of lines, words and bytes when one line file is given", function() {
+      let expectedOutput = "\t0\t1 oneLineFile";
+      let actualOutput = wc(["-w", "-l", "oneLineFile"], fs);
+      assert.equal(expectedOutput, actualOutput);
+    });
+    it("should return zero for all parameters when input file is empty", function() {
+      let expectedOutput = "\t0\t0 emptyFile";
+      let actualOutput = wc(["-l", "-c", "emptyFile"], fs);
+      assert.equal(expectedOutput, actualOutput);
+    });
+
+    it("should return number of lines when -l option is given", function() {
+      let expectedOutput = "\t9\t19 numbers";
+      let actualOutput = wc(["-c", "-l", "numbers"], fs);
+      assert.equal(expectedOutput, actualOutput);
+    });
+
+    it("should return number of bytes when -c option is geven", function() {
+      let expectedOutput = "\t10\t19 numbers";
+      let actualOutput = wc(["-c", "-w", "numbers"], fs);
+      assert.equal(expectedOutput, actualOutput);
+    });
+
+    it("should return number of bytes when -c option is geven", function() {
+      let expectedOutput = "\t10\t19 numbers";
+      let actualOutput = wc(["-w", "-c", "numbers"], fs);
+      assert.equal(expectedOutput, actualOutput);
+    });
+
+    it("should return number of bytes when -c option is geven", function() {
+      let expectedOutput = "\t9\t10\t19 numbers";
+      let actualOutput = wc(["-w", "-c", "-l", "numbers"], fs);
+      assert.equal(expectedOutput, actualOutput);
+    });
+
+    it("should return number of bytes when -c option is geven", function() {
+      let expectedOutput = "\t9\t10\t19 numbers";
+      let actualOutput = wc(["-c", "-w", "-l", "numbers"], fs);
+      assert.equal(expectedOutput, actualOutput);
+    });
+
+    it("should return number of bytes when -c option is geven", function() {
+      let expectedOutput = "\t9\t10\t19 numbers";
+      let actualOutput = wc(["-w", "-l", "-c", "numbers"], fs);
+      assert.equal(expectedOutput, actualOutput);
+    });
+
+    it("should return number of bytes when -c option is geven", function() {
+      let expectedOutput = "\t9\t10\t19 numbers";
+      let actualOutput = wc(["-c", "-l", "-w", "numbers"], fs);
+      assert.equal(expectedOutput, actualOutput);
+    });
+
+    it("should return number of bytes when -c option is geven", function() {
+      let expectedOutput = "\t9\t10\t19 numbers";
+      let actualOutput = wc(["-l", "-w", "-c", "numbers"], fs);
+      assert.equal(expectedOutput, actualOutput);
+    });
+
+    it("should return number of bytes when -c option is geven", function() {
+      let expectedOutput = "\t9\t10\t19 numbers";
+      let actualOutput = wc(["-l", "-c", "-w", "numbers"], fs);
+      assert.equal(expectedOutput, actualOutput);
+    });
+
+    it("should return number of lines,words and bytes", function() {
+      let expectedOutput = "\t9\t10\t19 numbers";
+      let actualOutput = wc(["-lwc", "numbers"], fs);
+      assert.equal(expectedOutput, actualOutput);
+    });
+
+    it("should return number of lines, words and bytes in fixed order", function() {
+      let actualOutput = wc(["-wlc", "numbers"], fs);
+      let expectedOutput = "\t9\t10\t19 numbers";
+      assert.equal(expectedOutput, actualOutput);
+    });
+
+    it("should return number of lines, words and bytes in fixed order", function() {
+      let actualOutput = wc(["-wlc", "alphabets"], fs);
+      let expectedOutput = "\t5\t6\t17 alphabets";
+      assert.equal(expectedOutput, actualOutput);
+    });
   });
 });
