@@ -8,15 +8,10 @@ const notStartsWithDash = function(option) {
   return !option.startsWith(DASH);
 };
 
-const removeDash = function(optionCandidates) {
-  let options = optionCandidates
-    .join(EMPTYSTR)
-    .split(EMPTYSTR)
-    .filter(notStartsWithDash)
-    .join(EMPTYSTR);
-
-  return options;
+const removeDash = function(options) {
+  return options.map(option => option.slice(1)).join("");
 };
+
 const parser = function(details) {
   let defaultOption = "lwc";
   let extractedOptions = details.filter(isStartWithDash);
