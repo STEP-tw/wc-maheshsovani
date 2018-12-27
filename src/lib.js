@@ -38,27 +38,27 @@ const getAllCounts = function(content) {
 };
 
 const formatter = function(args) {
-  let { output, file } = args;
-  return output.join(TAB) + SPACE + file;
+  let { counts, file } = args;
+  return counts.join(TAB) + SPACE + file;
 };
 
 const singleFileCounts = function(options, fs, file) {
   const { readFileSync } = fs;
   let content = readContent(readFileSync, file);
   let { linesCount, wordsCount, bytesCount } = getAllCounts(content);
-  let output = [];
+  let counts = [];
   if (options.includes("l")) {
-    output.push(linesCount);
+    counts.push(linesCount);
   }
 
   if (options.includes("w")) {
-    output.push(wordsCount);
+    counts.push(wordsCount);
   }
 
   if (options.includes("c")) {
-    output.push(bytesCount);
+    counts.push(bytesCount);
   }
-  return { output, file };
+  return { counts, file };
 };
 
 let getTotal = function(firstList, secondList) {
@@ -69,14 +69,20 @@ let getTotal = function(firstList, secondList) {
   return outputSum;
 };
 
-let multipleFileData = function(fs, args) {
-  let { options, files } = args;
-  let getSingleFileContent = singleFileCounts.bind(null, options, fs);
-  let wholeData = files.map(getSingleFileContent);
-  let totalInput = wholeData.map(element => element.output);
-  let total = totalInput.reduce(getTotal);
-  wholeData.push({ output: total, file: "total" });
-  let finalResult = wholeData.map(formatter);
+let multipleFileData = function(fs, { options, files }) {
+  let getSingleFileCounts = singleFileCounts.bind(null, options, fs);
+
+  let allFileDetails = files.map(getSingleFileCounts);
+
+  let allFileCounts = allFileDetails.map(element => element.counts);
+
+  allFileDetails.push({
+    counts: allFileCounts.reduce(getTotal),
+    file: "total"
+  });
+
+  let finalResult = allFileDetails.map(formatter);
+
   return finalResult.join(NEWLINE);
 };
 

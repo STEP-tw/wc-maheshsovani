@@ -1,4 +1,5 @@
 const DASH = "-";
+const EMPTYSTR = "";
 const isStartWithDash = function(option) {
   return option.startsWith(DASH);
 };
@@ -9,10 +10,10 @@ const notStartsWithDash = function(option) {
 
 const removeDash = function(optionCandidates) {
   let options = optionCandidates
-    .join("")
-    .split("")
+    .join(EMPTYSTR)
+    .split(EMPTYSTR)
     .filter(notStartsWithDash)
-    .join("");
+    .join(EMPTYSTR);
 
   return options;
 };
