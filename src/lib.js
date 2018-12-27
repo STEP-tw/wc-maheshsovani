@@ -16,25 +16,25 @@ const countBytes = function(file) {
   return file.split(EMPTYSTR).length;
 };
 
-const replace = function(character) {
-  if (character == SPACE) {
-    character = NEWLINE;
-  }
-  return character;
-};
-
 const isNotEmpty = function(character) {
   return character != EMPTYSTR;
 };
 
+const splitBy = function(seperator, content) {
+  return content.split(seperator);
+};
+
+const removeSpacesAndNewLine = splitBy.bind(null, /[ \n]+/);
+
 const countWords = function(file) {
-  let content = file.split(EMPTYSTR);
-  let words = content
-    .map(replace)
-    .join(EMPTYSTR)
-    .split(NEWLINE)
-    .filter(isNotEmpty);
-  return words.length;
+  return removeSpacesAndNewLine(file).filter(isNotEmpty).length;
+};
+
+const getAllCounts = function(content) {
+  let linesCount = countLines(content);
+  let wordsCount = countWords(content);
+  let bytesCount = countBytes(content);
+  return { linesCount, wordsCount, bytesCount };
 };
 
 const wc = function(args, fs) {
@@ -42,9 +42,7 @@ const wc = function(args, fs) {
   const { files, options } = parser(args);
   let output = [];
   let content = readContent(readFileSync, files[0]);
-  let linesCount = countLines(content);
-  let wordsCount = countWords(content);
-  let bytesCount = countBytes(content);
+  let { linesCount, wordsCount, bytesCount } = getAllCounts(content);
 
   if (options.includes("l")) {
     output += TAB + linesCount;
