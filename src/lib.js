@@ -81,9 +81,7 @@ let multipleFileData = function(fs, { options, files }) {
     file: "total"
   });
 
-  let finalResult = allFileDetails.map(formatter);
-
-  return finalResult.join(NEWLINE);
+  return allFileDetails.map(formatter).join(NEWLINE);
 };
 
 const wc = function(args, fs) {

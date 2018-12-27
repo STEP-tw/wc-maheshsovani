@@ -144,6 +144,24 @@ describe("wc", function() {
     });
   });
   describe("multiple files", function() {
+    it('should return content of multiple files with total if "lcw" is specified as option', function() {
+      actualOutput = wc(["-lcw", "numbers", "alphabets"], fs);
+      expectedOutput =
+        "9\t10\t19 numbers\n5\t6\t17 alphabets\n14\t16\t36 total";
+      assert.deepEqual(actualOutput, expectedOutput);
+    });
+    it('should return content of multiple files with total if "clw" is specified as option"', function() {
+      actualOutput = wc(["-clw", "numbers", "alphabets"], fs);
+      expectedOutput =
+        "9\t10\t19 numbers\n5\t6\t17 alphabets\n14\t16\t36 total";
+      assert.deepEqual(actualOutput, expectedOutput);
+    });
+    it('should return content of multiple files with total if "wlc" is specified as option"', function() {
+      actualOutput = wc(["-wlc", "numbers", "alphabets"], fs);
+      expectedOutput =
+        "9\t10\t19 numbers\n5\t6\t17 alphabets\n14\t16\t36 total";
+      assert.deepEqual(actualOutput, expectedOutput);
+    });
     it("should return the lines,bytes and words count along with total of them for multiple files", function() {
       actualOutput = wc(["-wlc", "alphabets", "numbers", "oneLineFile"], fs);
       expectedOutput =

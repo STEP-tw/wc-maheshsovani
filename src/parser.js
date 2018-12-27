@@ -9,7 +9,7 @@ const notStartsWithDash = function(option) {
 };
 
 const removeDash = function(options) {
-  return options.map(option => option.slice(1)).join("");
+  return options.map(option => option.slice(1)).join(EMPTYSTR);
 };
 
 const parser = function(details) {
