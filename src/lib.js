@@ -37,25 +37,58 @@ const getAllCounts = function(content) {
   return { linesCount, wordsCount, bytesCount };
 };
 
-const wc = function(args, fs) {
-  const { readFileSync } = fs;
-  const { files, options } = parser(args);
-  let output = [];
-  let content = readContent(readFileSync, files[0]);
-  let { linesCount, wordsCount, bytesCount } = getAllCounts(content);
+const formatter = function(args) {
+  let { output, file } = args;
+  return output.join(TAB) + SPACE + file;
+};
 
+const singleFileCounts = function(options, fs, file) {
+  const { readFileSync } = fs;
+  let content = readContent(readFileSync, file);
+  let { linesCount, wordsCount, bytesCount } = getAllCounts(content);
+  let output = [];
   if (options.includes("l")) {
-    output += TAB + linesCount;
+    output.push(linesCount);
   }
 
   if (options.includes("w")) {
-    output += TAB + wordsCount;
+    output.push(wordsCount);
   }
 
   if (options.includes("c")) {
-    output += TAB + bytesCount;
+    output.push(bytesCount);
   }
-  return output + SPACE + files[0];
+  return { output, file };
+};
+
+let getTotal = function(firstList, secondList) {
+  let outputSum = [];
+  for (let counter = 0; counter < firstList.length; counter++) {
+    outputSum[counter] = firstList[counter] + secondList[counter];
+  }
+  return outputSum;
+};
+
+let multipleFileData = function(fs, args) {
+  let { options, files } = args;
+  let getSingleFileContent = singleFileCounts.bind(null, options, fs);
+  let wholeData = files.map(getSingleFileContent);
+  let totalInput = wholeData.map(element => element.output);
+  let total = totalInput.reduce(getTotal);
+  wholeData.push({ output: total, file: "total" });
+  let finalResult = wholeData.map(formatter);
+  return finalResult.join(NEWLINE);
+};
+
+const wc = function(args, fs) {
+  let { options, files } = parser(args);
+  let result = singleFileCounts(options, fs, files[0]);
+  let singleFileOutput = formatter(result);
+
+  if (files.length == 1) {
+    return singleFileOutput;
+  }
+  return multipleFileData(fs, { options, files });
 };
 
 module.exports = { wc };
