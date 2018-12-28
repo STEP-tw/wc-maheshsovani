@@ -1,22 +1,15 @@
 const DASH = "-";
-const EMPTYSTR = "";
-const isStartWithDash = function(option) {
-  return option.startsWith(DASH);
-};
 
 const notStartsWithDash = function(option) {
   return !option.startsWith(DASH);
 };
 
-const removeDash = function(options) {
-  return options.map(option => option.slice(1)).join(EMPTYSTR);
-};
-
 const parser = function(details) {
-  let defaultOption = "lwc";
-  let extractedOptions = details.filter(isStartWithDash);
-  let options = removeDash(extractedOptions) || defaultOption;
-  let files = details.filter(notStartsWithDash);
+  let defaultOption = "-lwc";
+  let startingIndex = details.findIndex(notStartsWithDash);
+  if (startingIndex < 0) startingIndex = details.length;
+  let options = details.slice(0, startingIndex).join("") || defaultOption;
+  let files = details.slice(startingIndex);
   return { options, files };
 };
 
