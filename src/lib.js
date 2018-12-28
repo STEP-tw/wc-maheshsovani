@@ -85,7 +85,11 @@ let multipleFileData = function(fs, { options, files }) {
 };
 
 const wc = function(args, fs) {
-  let { options, files } = parser(args);
+  let { options, files, error } = parser(args);
+
+  if (error) {
+    return error;
+  }
   let result = singleFileCounts(options, fs, files[0]);
   let singleFileOutput = formatter(result);
 
