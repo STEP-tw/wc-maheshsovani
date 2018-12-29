@@ -169,4 +169,11 @@ describe("wc", function() {
       assert.deepEqual(actualOutput, expectedOutput);
     });
   });
+  describe("wc for error handling", function() {
+    it("should return error when the options given are invalid", function() {
+      actualOutput = wc(["-asdwlc", "alphabets"], fs);
+      expectedOutput = "wc: illegal option -- a\nusage: wc [-clmw] [file...]";
+      assert.deepEqual(actualOutput, expectedOutput);
+    });
+  });
 });
