@@ -1,11 +1,11 @@
-const SPACE = " ";
-const TAB = "\t";
-const EMPTYSTR = "";
-const NEWLINE = "\n";
-const { parser } = require("./parser.js");
+const SPACE = ' ';
+const TAB = '\t';
+const EMPTYSTR = '';
+const NEWLINE = '\n';
+const { parser } = require('./parser.js');
 
 const readContent = function(readFileSync, file) {
-  return readFileSync(file, "utf8");
+  return readFileSync(file, 'utf8');
 };
 
 const countLines = function(file) {
@@ -47,15 +47,15 @@ const singleFileCounts = function(options, fs, file) {
   let content = readContent(readFileSync, file);
   let { linesCount, wordsCount, bytesCount } = getAllCounts(content);
   let counts = [];
-  if (options.includes("l")) {
+  if (options.includes('l')) {
     counts.push(linesCount);
   }
 
-  if (options.includes("w")) {
+  if (options.includes('w')) {
     counts.push(wordsCount);
   }
 
-  if (options.includes("c")) {
+  if (options.includes('c')) {
     counts.push(bytesCount);
   }
   return { counts, file };
@@ -78,7 +78,7 @@ let multipleFileData = function(fs, { options, files }) {
 
   allFileDetails.push({
     counts: allFileCounts.reduce(getTotal),
-    file: "total"
+    file: 'total'
   });
 
   return allFileDetails.map(formatter).join(NEWLINE);
